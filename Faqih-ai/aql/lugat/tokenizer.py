@@ -1,3 +1,4 @@
+# File: Faqih-ai/aql/lugat/tokenizer.py
 # Bismillahir Rahmanir Rahim
 # El Hamdu Lillah El Hamdu Lillah El Hamdulillah
 # El Hamdu Lillahi Rabbul Alemin
@@ -105,6 +106,12 @@ class FaqihTokenizer:
                 words[w] += 1
         # BPE sembollerini kelime sonu isaretiyle kur
         symbol_seqs = {w: list(w) + [_WORD_END] for w in words}
+        # Temel alfabe: tum tek karakterler vocab'e girsin ki
+        # decode '<unk>' ile dolmasin (BPE tabani).
+        for seq in symbol_seqs.values():
+            for ch in seq:
+                if ch not in self.vocab:
+                    self.vocab[ch] = len(self.vocab)
         for _ in range(iterations):
             if len(self.vocab) >= vocab_size:
                 break
