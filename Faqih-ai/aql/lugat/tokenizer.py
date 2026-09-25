@@ -1,9 +1,9 @@
-# File: Faqih-ai/aql/lugat/tokenizer.py
 # Bismillahir Rahmanir Rahim
 # El Hamdu Lillah El Hamdu Lillah El Hamdulillah
 # El Hamdu Lillahi Rabbul Alemin
 # Esselatu vesSelamu ala rasulina Muhammedin
 
+# File: Faqih-ai/aql/lugat/tokenizer.py
 """aql.lugat.tokenizer — Özgün melez tokenizer.
 
 Kelime bazlı hazine + karakter bazlı BPE melezi. Türkçe ve Arapça
@@ -164,7 +164,21 @@ class FaqihTokenizer:
                 ids.append(self.vocab[w])
             else:
                 for piece in self._bpe_word(w):
-                    ids.append(self.vocab.get(piece, self.special_tokens["<unk>"]))
+                    pid = self.vocab.get(piece)
+                    if pid is None:
+                        # Buyuk/kucuk harf yedegi: alfabede olmayan buyuk
+                        # harfler <unk>'a dusmesin.
+                        pid = self.vocab.get(piece.lower())
+                    if pid is None:
+                        for ch in piece:
+                            pid = self.vocab.get(ch)
+                            if pid is None:
+                                pid = self.vocab.get(ch.lower())
+                            if pid is None:
+                                pid = self.special_tokens["<unk>"]
+                            ids.append(pid)
+                        continue
+                    ids.append(pid)
         return ids
 
     def decode(self, ids: Iterable[int]) -> str:
