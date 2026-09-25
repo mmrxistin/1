@@ -110,7 +110,7 @@ _RULES: list[tuple[tuple[str, ...], str]] = [
 ]
 
 # Kural bulamazsak verilecek yer tutucu — denetimi geçecek şekilde yazıldı.
-_YEDEK_CEVAAP = ("El Hamdu Lillah. Sorunuzu aldım; kaynağa sadakat ile, "
+_YEDEK_CEVAP = ("El Hamdu Lillah. Sorunuzu aldım; kaynağa sadakat ile, "
                  "harf harf muhafaza ederek cevap vereceğim.")
 
 
@@ -123,8 +123,12 @@ def _cevap(question: str) -> str:
             cevap = reply
             break
     if cevap is None:
-        cevap = _YEDEK_CEVAAP
+        cevap = _YEDEK_CEVAP
     # --- SON CEVAP DENETİMİ ---
+    # Yüzde yüz hassasiyet: cevapta Allah-u Teâlâ'ya ve ayetlerine
+    # saygısızlık manasına gelebilecek hiçbir yanlışlık kalmamalı.
     if not _cevap_denetle(cevap):
-        cevap = _YEDEK_CEVAAP
+        cevap = _YEDEK_CEVAP
+        if not _cevap_denetle(cevap):  # yedek bile hatalıysa:
+            cevap = "El Hamdu Lillah. Cevabımı kaynağa sadakat ile vereceğim."
     return cevap

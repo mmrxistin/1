@@ -49,22 +49,37 @@ class BolumLLM:
         self.vocab = None
 
     def egit(self, log=False):
+        # NOT: hash() kullanma — Python oturumdan oturuma degisir (PYTHONHASHSEED).
+        # Sabit tohum: bolum adinin karakter kodlarindan uretilir.
+        tohum = sum(ord(c) for c in self.ad) % 2**31
         self.model, self.vocab = egit(
             self.egitim_metni, adim=self.adim, dim=self.dim,
-            layers=self.layers, block=self.block, seed=hash(self.ad) % 2**31)
+            layers=self.layers, block=self.block, seed=tohum)
         if log:
-            print(f"[{self.ad}] egitildi.")
+            print(f"[{self.ad}] egitildi (tohum={tohum}).")
         return self
 
     def kaydet(self):
         os.makedirs(MODELLER_DIR, exist_ok=True)
         self.model.save(os.path.join(MODELLER_DIR, f"{self.ad}.pkl"))
+        # Vocab da birlikte kaydedilir: egitim metni sonra degisse bile
+        # yuklenen modelin katman boyutlari vocab ile daima uyumlu kalir.
+        with open(os.path.join(MODELLER_DIR, f"{self.ad}.vocab"), "wb") as f:
+            import pickle
+            pickle.dump({"stoi": self.vocab.stoi, "itos": self.vocab.itos}, f)
 
     def yukle(self) -> bool:
         yol = os.path.join(MODELLER_DIR, f"{self.ad}.pkl")
-        if os.path.exists(yol):
+        vyol = os.path.join(MODELLER_DIR, f"{self.ad}.vocab")
+        if os.path.exists(yol) and os.path.exists(vyol):
             self.model = NumpyMiniGPT.load(yol)
-            self.vocab = CharVocab(self.egitim_metni)
+            import pickle
+            with open(vyol, "rb") as f:
+                v = pickle.load(f)
+            self.vocab = CharVocab("")
+            self.vocab.stoi = {k: int(i) for k, i in v["stoi"].items()}
+            self.vocab.itos = {int(i): k for k, i in v["itos"].items()}
+            self.vocab.size = len(self.vocab.stoi)
             return True
         return False
 
