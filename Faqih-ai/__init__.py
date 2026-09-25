@@ -4,6 +4,13 @@
 # Esselatu vesSelamu ala rasulina Muhammedin
 # SUPHAN ALLAH i AZİM VE BİHAMDİHİ VELHAMDULİLLAH
 # LA İLAHE İLLALLAHU VALLAHU EKBER
+
+
+
+
+
+
+
 # FAQIH-AI — Özgün Python AI Projesi
 # ====================================
 # Sıfırdan, özgün, çoklu-temsilcili mimari. Ollama yok, hazır API yok.
