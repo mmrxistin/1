@@ -1,6 +1,7 @@
-# File: Faqih-ai/aql/qarar/__init__.py
 # Bismillahir Rahmanir Rahim
-# El Hamdu Lillah El Hamdulillah
+# El Hamdu Lillah El Hamdu Lillah El Hamdulillah
+# El Hamdu Lillahi Rabbul Alemin
+# Esselatu vesSelamu ala rasulina Muhammedin
 """aql.qarar — Karar/cevap katmanı.
 
 Şimdilik kural tabanlı minik cevap motoru: soruyu tokenizer'dan

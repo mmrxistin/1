@@ -1,6 +1,7 @@
-# File: Faqih-ai/aql/lugat/ui.py
 # Bismillahir Rahmanir Rahim
-# El Hamdu Lillah El Hamdulillah
+# El Hamdu Lillah El Hamdu Lillah El Hamdulillah
+# El Hamdu Lillahi Rabbul Alemin
+# Esselatu vesSelamu ala rasulina Muhammedin
 """aql.lugat.ui — Faqih AI için Tk arayüz.
 
 Ust bolme: AI'a soru yaz (aql.qarar cevaplari).
