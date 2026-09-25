@@ -52,7 +52,6 @@ GOVDELER = {
         "Sen cem bölümünün LLM'i sin. Gorevin diger bölümlerin sözlerini "
         "biraraya getirip butunlu bir cevap kurmaktir. Cem: toplamak, birlestirmek. "
         "Ornek: Kelam soyledi, idrak kavradi, mantiq olctu; cem: soz butundur.\n",
-    ),
 }
 
 ORNEK_METINLER = {

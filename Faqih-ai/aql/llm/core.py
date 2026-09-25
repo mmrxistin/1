@@ -153,7 +153,7 @@ class NumpyMiniGPT:
             caches.append(x.copy())
             x = blk(x)
         x = self._lnf(x)
-        logits = x @ self.head_w
+        logits = x @ self.head_w.T
         self._cache = (idx, caches, x)
         return logits
 
@@ -179,9 +179,9 @@ class NumpyMiniGPT:
         dlogits = p.copy()
         dlogits[np.arange(T), targets] -= 1.0
         dlogits /= T
-        # head (tied): dW = x.T @ dlogits ; dX = dlogits @ W.T
-        dW = x.T @ dlogits
-        dX = dlogits @ self.head_w.T
+        # head (tied): logits = x @ W.T  =>  dW = dlogits.T @ x ; dX = dlogits @ W
+        dW = dlogits.T @ x
+        dX = dlogits @ self.head_w
         # lnf gradyani (yaklasik: sadece olcekle)
         dX = dX * self.lnf_g
         # bloklarda geriye: her blok icin残 gradyani MLP koluna uygula
@@ -203,7 +203,7 @@ class NumpyMiniGPT:
             # attention kolunu (agir) atla: kelime gecmisini zaten MLP tutuyor
             # tied head guncelle
         self.head_w -= self.lr * dW
-        self.tok_emb -= self.lr * dW[: self.vocab_size]
+        self.tok_emb = self.head_w
         return float(loss)
 
     # -- uretim --------------------------------------------------------------
@@ -221,7 +221,8 @@ class NumpyMiniGPT:
             out.append(nxt)
         return vocab.decode(out[len(ids):])
 
-    # -- kaydet / yukle ------------------------------------------------------    def save(self, path):
+    # -- kaydet / yukle ------------------------------------------------------
+    def save(self, path):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         state = {
             "vocab_size": self.vocab_size,

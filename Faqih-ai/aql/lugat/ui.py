@@ -17,13 +17,13 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..",
 
 from aql.lugat.tokenizer import FaqihTokenizer, normalize_text, tokenize
 from aql.lugat.morphology import guess_root, morph_analysis
-from aql.qarar import answer
+from aql.llm import router as llm_router
 
 
 class FaqihUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Faqih AI — Sohbet & Tokenizer")
+        self.title("Faqih AI — 7 Bölüm LLM Sohbet")
         self.geometry("820x640")
         self.tok = FaqihTokenizer()
         self.tok.train([
@@ -64,7 +64,12 @@ class FaqihUI(tk.Tk):
             return
         self._chat("Sen", q)
         self.entry.delete(0, "end")
-        self._chat("Faqih", answer(q))
+        try:
+            cevaplar = llm_router.sor(q, tek_bolum=False)
+            for ad, cev in cevaplar.items():
+                self._chat(ad.upper(), cev)
+        except Exception as h:
+            self._chat("Hata", str(h))
         self.detail(q)
 
     def show_tokens(self):
