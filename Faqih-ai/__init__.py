@@ -1,8 +1,9 @@
 # Bismillahir Rahmanir Rahim
 # El Hamdu Lillah El Hamdu Lillah El Hamdulillah
 # El Hamdu Lillahi Rabbul Alemin
-# Esselatu vesselamu ala rasulillah, Hz Muhammed s.a.v
-#
+# Esselatu vesSelamu ala rasulina Muhammedin
+# SUPHAN ALLAH i AZİM VE BİHAMDİHİ VELHAMDULİLLAH
+# LA İLAHE İLLALLAHU VALLAHU EKBER
 # FAQIH-AI — Özgün Python AI Projesi
 # ====================================
 # Sıfırdan, özgün, çoklu-temsilcili mimari. Ollama yok, hazır API yok.
